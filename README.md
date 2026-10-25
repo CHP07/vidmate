@@ -80,13 +80,13 @@ Last line must be `Environment ready.`
 
 ```bash
 # 1. Scaffold a project (pick any name)
-node scripts/hf-runner.js init videos/my-first-video --non-interactive
+node scripts/hf-runner.js init videos/<folder_name> --non-interactive
 
 # 2. Repoint its npm scripts at the local runner — init writes `npx`-based
 #    scripts, which would skip the sandbox and write caches outside the project:
-sed -i.bak 's|npx --yes hyperframes@[0-9.]*|node ../../scripts/hf-runner.js|' videos/my-first-video/package.json
-rm -f videos/my-first-video/package.json.bak
-cd videos/my-first-video
+sed -i.bak 's|npx --yes hyperframes@[0-9.]*|node ../../scripts/hf-runner.js|' videos/<folder_name>/package.json
+rm -f videos/<folder_name>/package.json.bak
+cd videos/<folder_name>
 npm pkg set scripts.snapshot="node ../../scripts/hf-runner.js snapshot"
 
 # 3. Write your scene in index.html:
@@ -96,12 +96,17 @@ npm pkg set scripts.snapshot="node ../../scripts/hf-runner.js snapshot"
 #    - deterministic only: no Date.now(), no Math.random()
 
 # 4. Gate: lint + runtime + layout + motion + contrast (must say "Check passed")
+#optional
 npm run check
 
 # 5. Look at frames before rendering — the check cannot see aesthetics
+#optional
 npm run snapshot -- --at 1,3,5,7
 
-# 6. Render  →  videos/my-first-video/renders/my-first-video_<timestamp>.mp4
+# to preview in browser  
+npm run dev
+
+# 6. Render  →  videos/my-first-video/renders/<folder_name>_<timestamp>.mp4
 npm run render
 ```
 
