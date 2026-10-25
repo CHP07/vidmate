@@ -3,6 +3,13 @@
 node_modules/
 .venv/
 
+# Local API keys (see .env.example)
+.env
+
+# Python bytecode
+__pycache__/
+*.pyc
+
 # HyperFrames caches & state, redirected here from C:\ (see scripts/hf-runner.js)
 .cache/
 .hyperframes/
