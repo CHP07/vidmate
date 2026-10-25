@@ -103,11 +103,13 @@ def main():
             print("[SKIP] Could not parse doctor output")
             data = None
         if data:
+            # "Version" only means a newer CLI release exists on npm — the
+            # pinned install still works, so it is not an environment failure.
             required_fails = [
                 c["name"]
                 for c in data["checks"]
                 if not c["ok"] and not c.get("hint", "").startswith(("pip", "winget"))
-                and c["name"] not in ("whisper-cpp", "TTS (Kokoro)", "BGM (MusicGen)", "Docker running")
+                and c["name"] not in ("whisper-cpp", "TTS (Kokoro)", "BGM (MusicGen)", "Docker running", "Version")
             ]
             results.append(
                 ok("HyperFrames doctor (required checks)", data["ok"] or not required_fails,
