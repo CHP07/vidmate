@@ -1,0 +1,11 @@
+{
+  "name": "bouncing-ball",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node ../../scripts/hf-runner.js preview",
+    "check": "node ../../scripts/hf-runner.js check",
+    "render": "node ../../scripts/hf-runner.js render",
+    "publish": "node ../../scripts/hf-runner.js publish"
+  }
+}

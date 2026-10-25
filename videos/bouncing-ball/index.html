@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --bg-deep: #05070f;
+        --bg-mid: #0b1224;
+        --accent: #ff8a3d;
+        --accent-2: #e0338a;
+        --cool: #6fe3ff;
+        --ink: #f4f6ff;
+        --font-display: "Segoe UI", system-ui, sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: var(--bg-deep);
+        font-family: var(--font-display);
+      }
+      #root {
+        position: relative; width: 1920px; height: 1080px;
+        background: var(--bg-deep); overflow: hidden;
+      }
+
+      /* ---------- background ---------- */
+      #bg {
+        position: absolute; inset: 0;
+        background:
+          radial-gradient(1200px 800px at 50% 8%, rgba(111, 227, 255, 0.08), transparent 60%),
+          radial-gradient(1400px 900px at 50% 110%, rgba(224, 51, 138, 0.10), transparent 65%),
+          linear-gradient(180deg, var(--bg-mid) 0%, var(--bg-deep) 100%);
+      }
+      .pulse {
+        position: absolute; left: 50%; top: 860px;
+        width: 2200px; height: 2200px; margin-left: -1100px; margin-top: -1100px;
+        border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(111, 227, 255, 0.14), transparent 70%);
+        opacity: 0;
+      }
+      /* faint grid on the floor for depth */
+      #motes {
+        position: absolute; inset: 0;
+      }
+      #fx {
+        position: absolute; inset: 0; will-change: transform;
+      }
+      #floorlines {
+        position: absolute; left: 0; top: 860px; width: 1920px; height: 220px;
+        background:
+          repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 160px);
+        transform: perspective(720px) rotateX(58deg);
+        transform-origin: top center;
+        mask-image: linear-gradient(180deg, rgba(0,0,0,0.9), transparent);
+        -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.9), transparent);
+      }
+      #floorline {
+        position: absolute; left: 0; top: 858px; width: 1920px; height: 3px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.65) 18%,
+                    rgba(255,255,255,0.65) 82%, transparent);
+        box-shadow: 0 0 24px rgba(111, 227, 255, 0.35);
+      }
+      .mote {
+        position: absolute; width: 4px; height: 4px; border-radius: 50%;
+        background: rgba(255, 255, 255, 0.35); opacity: 0.12;
+      }
+
+      /* ---------- floor contact fx ---------- */
+      #flash {
+        position: absolute; left: 50%; top: 860px;
+        width: 520px; height: 60px; margin-left: -260px; margin-top: -30px;
+        border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(255, 176, 92, 0.55), transparent 72%);
+        opacity: 0;
+      }
+      .ring {
+        position: absolute; left: 50%; top: 860px;
+        width: 320px; height: 72px; margin-left: -160px; margin-top: -36px;
+        border: 2px solid rgba(111, 227, 255, 0.8);
+        border-radius: 50%; opacity: 0;
+      }
+
+      /* ---------- ball ---------- */
+      #shadow {
+        position: absolute; left: 50%; top: 860px;
+        width: 180px; height: 46px; margin-left: -90px; margin-top: -23px;
+        border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(0, 0, 0, 0.85), transparent 72%);
+        filter: blur(3px);
+      }
+      #ballwrap {
+        position: absolute; left: 50%; top: 0;
+        width: 140px; height: 140px; margin-left: -70px;
+        will-change: transform;
+      }
+      #ball {
+        width: 140px; height: 140px; border-radius: 50%;
+        transform-origin: 50% 100%;
+        background:
+          radial-gradient(circle at 32% 26%, #ffe1b8 0%, #ffb36b 22%, #ff8a3d 45%, var(--accent-2) 72%, #5b0d86 100%);
+        box-shadow:
+          0 0 60px 8px rgba(255, 138, 61, 0.45),
+          0 0 120px 30px rgba(224, 51, 138, 0.22),
+          inset -18px -22px 40px rgba(0, 0, 30, 0.45);
+      }
+      #ball .spec {
+        position: absolute; left: 26%; top: 16%;
+        width: 30px; height: 30px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 70%);
+      }
+
+      /* ---------- captions ---------- */
+      .cap {
+        position: absolute; color: var(--ink); opacity: 0;
+        text-transform: uppercase; letter-spacing: 0.32em;
+      }
+      #title {
+        left: 0; top: 300px; width: 100%;
+        opacity: 1;
+        text-align: center; font-size: 200px; font-weight: 200;
+        letter-spacing: 0.34em; text-indent: 0.34em;
+        background: linear-gradient(180deg, #ffffff, #9fb6d4);
+        -webkit-background-clip: text; background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      #tagline {
+        left: 0; top: 560px; width: 100%;
+        text-align: center; font-size: 28px; font-weight: 400;
+        color: rgba(214, 228, 255, 0.75);
+      }
+      #corner {
+        right: 60px; top: 56px; font-size: 20px;
+        color: rgba(214, 228, 255, 0.55); letter-spacing: 0.22em;
+      }
+      #endline {
+        left: 0; top: 980px; width: 100%;
+        text-align: center; font-size: 28px;
+        color: rgba(214, 228, 255, 0.8);
+      }
+      .vignette {
+        position: absolute; inset: 0; pointer-events: none;
+        background: radial-gradient(1600px 1000px at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-199x"
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="10"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div data-hf-id="hf-ftaq" id="cam">
+        <div data-hf-id="hf-2xc0" id="bg"></div>
+        <div data-hf-id="hf-le15" id="pulseA" class="pulse"></div>
+        <div data-hf-id="hf-pc56" id="pulseB" class="pulse"></div>
+        <div data-hf-id="hf-lfoz" id="motes"></div>
+        <div data-hf-id="hf-5tf6" id="floorlines"></div>
+        <div data-hf-id="hf-13ur" id="floorline"></div>
+        <div data-hf-id="hf-775n" id="fx">
+          <div data-hf-id="hf-2h4t" id="shadow"></div>
+          <div data-hf-id="hf-hmg5" id="flash"></div>
+          <div data-hf-id="hf-rmmi" id="rings"></div>
+          <div data-hf-id="hf-6nve" id="ballwrap">
+            <div data-hf-id="hf-j45q" id="ball"><span data-hf-id="hf-cmyo" class="spec"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <h1 data-hf-id="hf-9s0s" id="title" class="clip cap" data-start="0" data-duration="2.6" data-track-index="2">Bounce</h1>
+      <div data-hf-id="hf-qfwa" id="tagline" class="clip cap" data-start="1.2" data-duration="7.6" data-track-index="2">
+        mass &middot; gravity &middot; restitution
+      </div>
+      <div data-hf-id="hf-owx1" id="corner" class="clip cap" data-start="0.2" data-duration="9.6" data-track-index="2" data-layout-ignore>
+        storyverse &middot; scene 01
+      </div>
+      <div data-hf-id="hf-pycm" id="endline" class="clip cap" data-start="8.9" data-duration="1.1" data-track-index="2">
+        still.
+      </div>
+
+      <div data-hf-id="hf-q7bi" class="vignette"></div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.seek(0).play();
+
+      /* ----- deterministic scene constants ----- */
+      const GROUND = 860;          // floor line y
+      const BALL = 140;            // ball diameter
+      const REST_TOP = GROUND - BALL;   // resting top edge = 720
+      const H0 = 540;              // initial drop height (center travel)
+      const DROP_START = 0.30;
+      const FIRST_FALL = 0.75;
+      const RESTI = 0.80;          // restitution
+      const GRAV = (2 * H0) / (FIRST_FALL * FIRST_FALL);
+
+      const START_Y = REST_TOP - H0;  // top edge at apex = 180
+
+      /* ----- camera: slow cinematic push-in + tiny bg parallax ----- */
+      tl.fromTo("#cam", { scale: 1, y: 0 }, { scale: 1.06, y: -14, duration: 10, ease: "power2.inOut" }, 0);
+
+      /* ----- the whole bounce rig drifts slowly right — choreographed pass ----- */
+      tl.fromTo("#fx", { x: -90 }, { x: 55, duration: 10, ease: "sine.inOut" }, 0);
+
+      /* ----- dust motes: deterministic golden-angle layout, slow drift ----- */
+      const motes = [];
+      const PHASE = 2.399963229728653; // golden angle in radians
+      for (let i = 0; i < 26; i++) {
+        const x = 120 + ((i * PHASE * 260) % 1680);
+        const y = 100 + ((i * 173) % 700);
+        const s = 1 + ((i * 7) % 3);
+        motes.push({ x: Math.round(x), y: Math.round(y), s });
+        const d = document.createElement("div");
+        d.className = "mote";
+        d.style.left = Math.round(x) + "px";
+        d.style.top = Math.round(y) + "px";
+        d.style.transform = "scale(" + s + ")";
+        document.getElementById("motes").appendChild(d);
+      }
+      motes.forEach((m, i) => {
+        tl.to("#motes>.mote:nth-child(" + (i + 1) + ")",
+          { y: -60 - (i * 13) % 120, duration: 9.6, ease: "none", opacity: 0.1 }, (i * 0.37) % 3);
+      });
+
+      /* ----- title / tagline / captions spacing ----- */
+      tl.fromTo("#title", { y: 30, scale: 0.96 },
+        { y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, 0);
+      tl.to("#title", { opacity: 0, y: -22, duration: 0.6, ease: "power2.in" }, 2.1);
+
+      tl.fromTo("#tagline", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 1.2);
+      tl.to("#tagline", { opacity: 0, duration: 0.6, ease: "power2.in" }, 8.0);
+
+      tl.fromTo("#corner", { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power1.out" }, 0.2);
+      tl.to("#corner", { opacity: 0, duration: 0.8, ease: "power1.in" }, 8.8);
+
+      tl.fromTo("#endline", { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "power2.out" }, 8.9);
+
+      /* ----- the bounce choreography ----- */
+      const shadow = "#shadow";
+      // initial states
+      tl.set("#ballwrap", { y: START_Y }, 0);
+      tl.set(shadow, { scale: 0.45, opacity: 0.16 }, 0);
+      tl.set("#ball", { scaleX: 1, scaleY: 1 }, 0);
+
+      const shadowAt = (h) => {
+        const p = h / H0;          // 1 at apex, 0 at ground
+        return { scale: 0.95 - 0.5 * p, opacity: 0.62 - 0.46 * p };
+      };
+      const APEX_Y = (h) => REST_TOP - h;
+
+      // pulses alternate between two layers so overlaps cross-fade
+      const pulseIds = ["#pulseA", "#pulseB"];
+
+      let h = H0;
+      let t = DROP_START + FIRST_FALL;  // first impact time
+      let pulseIdx = 0;
+      let ringNo = 0;
+      const impacts = [];
+
+      // collect the deterministic impact schedule
+      while (true) {
+        impacts.push(t);
+        h = h * RESTI;
+        const seg = Math.sqrt((2 * h) / GRAV);
+        if (t + 2 * seg > 9.0 || h < 30) break;
+        t += 2 * seg;
+      }
+      const lastImpact = impacts[impacts.length - 1];
+
+      // initial fall
+      tl.to("#ballwrap", { y: REST_TOP, duration: FIRST_FALL, ease: "power2.in" }, DROP_START);
+      tl.fromTo("#ball", { scaleX: 1, scaleY: 1 }, { scaleX: 0.9, scaleY: 1.13, duration: FIRST_FALL, ease: "power2.in" }, DROP_START);
+      const s0 = shadowAt(H0), s1 = shadowAt(0);
+      tl.fromTo(shadow, { scale: s0.scale, opacity: s0.opacity }, { scale: s1.scale, opacity: s1.opacity, duration: FIRST_FALL, ease: "power2.in" }, DROP_START);
+
+      impacts.forEach(impactT => {
+        // squash on contact
+        tl.to("#ball", { scaleX: 1.3, scaleY: 0.58, duration: 0.06, ease: "power3.out" }, impactT);
+
+        // floor flash + pulse + ring
+        tl.fromTo("#flash", { opacity: 0}, { opacity: 0.85, duration: 0.045, ease: "power2.out" }, impactT);
+        tl.to("#flash", { opacity: 0, duration: 0.30, ease: "power2.out" }, impactT + 0.045);
+        const p = pulseIds[pulseIdx % 2];
+        tl.fromTo(p, { opacity: 0 }, { opacity: 0.55, duration: 0.05, ease: "power1.out" }, impactT);
+        tl.to(p, { opacity: 0, scale: 1.8, duration: 0.9, ease: "power2.out" }, impactT + 0.05);
+        pulseIdx++;
+
+        if (ringNo < 6) {
+          const ring = document.createElement("div");
+          ring.className = "ring";
+          document.getElementById("rings").appendChild(ring);
+          tl.fromTo(ring, { opacity: 0.9, scale: 0.35 },
+            { opacity: 0, scale: 2.6, duration: 0.75, ease: "power2.out" }, impactT);
+          ringNo++;
+        }
+      });
+
+      // rise+fall bounces between consecutive impacts (last impact settles instead)
+      for (let i = 0; i < impacts.length - 1; i++) {
+        const tImpact = impacts[i];
+        const hApex = H0 * Math.pow(RESTI, i + 1);
+        const seg = Math.sqrt((2 * hApex) / GRAV);
+
+        // rise (starts squashed-ish, ends stretched less at apex)
+        tl.to("#ballwrap", { y: APEX_Y(hApex), duration: seg, ease: "power2.out" }, tImpact + 0.06);
+        tl.to("#ball", { scaleX: 0.93, scaleY: 1.1, duration: 0.10, ease: "power2.out" }, tImpact + 0.06);
+        tl.to("#ball", { scaleX: 1, scaleY: 1, duration: Math.max(seg - 0.1, 0.05), ease: "power1.out" }, tImpact + 0.16);
+        const sApex = shadowAt(hApex);
+        tl.to(shadow, { scale: sApex.scale, opacity: sApex.opacity, duration: seg, ease: "power2.out" }, tImpact + 0.06);
+
+        // fall back down
+        if (i < impacts.length - 1) {
+          tl.to("#ballwrap", { y: REST_TOP, duration: seg, ease: "power2.in" }, tImpact + 0.06 + seg);
+          tl.to("#ball", { scaleX: 0.9, scaleY: 1.13, duration: seg, ease: "power2.in" }, tImpact + 0.06 + seg);
+          tl.to(shadow, { scale: s1.scale, opacity: s1.opacity, duration: seg, ease: "power2.in" }, tImpact + 0.06 + seg);
+        }
+      }
+
+      /* ----- settle: the last impact ends in one small final hop, then rest ----- */
+      const settleT = lastImpact + 0.06;
+      const H_SETTLE = 26;
+      const segS = Math.sqrt((2 * H_SETTLE) / GRAV);
+      tl.to("#ballwrap", { y: APEX_Y(H_SETTLE), duration: segS, ease: "power2.out" }, settleT);
+      tl.to("#ballwrap", { y: REST_TOP, duration: segS, ease: "power2.in" }, settleT + segS);
+      const sSettleA = shadowAt(H_SETTLE), sSettleB = shadowAt(0);
+      tl.to(shadow, { scale: sSettleA.scale, opacity: sSettleA.opacity, duration: segS, ease: "power2.out" }, settleT);
+      tl.to(shadow, { scale: sSettleB.scale, opacity: sSettleB.opacity, duration: segS, ease: "power2.in" }, settleT + segS);
+
+      // gentle breathing wobble at rest
+      tl.to("#ball", { scaleX: 1.04, scaleY: 0.96, duration: 0.4, ease: "sine.inOut" }, 9.0);
+      tl.to("#ball", { scaleX: 1, scaleY: 1, duration: 0.5, ease: "sine.inOut" }, 9.4);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

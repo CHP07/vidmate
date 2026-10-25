@@ -1,0 +1,10 @@
+# StoryVerse pipeline dependencies — installed only in the project-local .venv
+# (never globally), matching the "local dependencies only" constraint.
+
+# Provides a bundled FFmpeg binary usable without any global/PATH install.
+imageio-ffmpeg>=0.6.0
+
+# Ships both FFmpeg and FFprobe static binaries (HyperFrames requires FFprobe
+# for probing media assets, which imageio-ffmpeg does not include).
+# Binaries are copied into tools/ffmpeg/ so the Node CLI can find them.
+static-ffmpeg>=2.12

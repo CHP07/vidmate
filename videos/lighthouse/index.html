@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080, height=1920, initial-scale=1.0">
+<title>Marina — The Lighthouse | HyperFrames 40s Story</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  :root{--navy:#080e20;--navy2:#0d1730;--water:#101d38;--white:#f7f5ef;--muted:#9aa7c0;--gold:#ffc65c;--red:#ff554f;--green:#45d68b;--coat:#ffbd28;--outline:#030711;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1080px;height:1920px;overflow:hidden;background:var(--navy);font-family:Impact,"Arial Black","Arial Narrow",system-ui,sans-serif}
+  #root{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--navy);isolation:isolate}
+  #art{position:absolute;inset:0;width:1080px;height:1920px;display:block;font-family:Impact,"Arial Black","Arial Narrow",system-ui,sans-serif}
+  #art text{font-family:Impact,"Arial Black","Arial Narrow",system-ui,sans-serif;font-weight:900}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.055;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");mix-blend-mode:screen}
+  .vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 43%,transparent 38%,rgba(0,0,0,.28) 100%)}
+  .caption{position:absolute;left:62px;right:62px;bottom:222px;min-height:138px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Impact,"Arial Black","Arial Narrow",system-ui,sans-serif;font-size:45px;line-height:1.12;letter-spacing:.015em;text-transform:none;color:var(--white);text-shadow:4px 4px 0 #02050d,-2px -2px 0 #02050d,2px -2px 0 #02050d,-2px 2px 0 #02050d,0 7px 12px rgba(0,0,0,.7);opacity:0;visibility:hidden;flex-wrap:wrap;align-content:center;gap:0 0px}
+  .caption .word{display:inline-block;white-space:pre}
+  .caption .word.active{color:var(--gold);transform:scale(1.035);text-shadow:0 0 18px rgba(255,198,92,.28),4px 4px 0 #02050d,-2px -2px 0 #02050d,2px -2px 0 #02050d,-2px 2px 0 #02050d}
+  .caption.danger .word.active{color:var(--red);text-shadow:0 0 18px rgba(255,85,79,.35),4px 4px 0 #02050d,-2px -2px 0 #02050d,2px -2px 0 #02050d,-2px 2px 0 #02050d}
+  .caption.marina .word.active{color:var(--coat)}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+</head>
+<body>
+<div id="root" data-hf-id="marina-root" data-composition-id="main" data-start="0" data-duration="40" data-width="1080" data-height="1920">
+<svg data-hf-id="hf-3tyq" id="art" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A dark nautical survival story about Marina and a lighthouse">
+<defs data-hf-id="hf-mh0t">
+  <linearGradient data-hf-id="hf-vlwz" id="sky" x1="0" y1="0" x2="0" y2="1"><stop data-hf-id="hf-ly0m" stop-color="#070c1a"/><stop data-hf-id="hf-dsbu" offset=".58" stop-color="#0d1730"/><stop data-hf-id="hf-j5b0" offset="1" stop-color="#101c35"/></linearGradient>
+  <linearGradient data-hf-id="hf-oqv5" id="sea" x1="0" y1="0" x2="0" y2="1"><stop data-hf-id="hf-d56r" stop-color="#101b34"/><stop data-hf-id="hf-ezlo" offset="1" stop-color="#060b18"/></linearGradient>
+  <linearGradient data-hf-id="hf-4qqr" id="beamFill"><stop data-hf-id="hf-1e6u" stop-color="#ffd66f" stop-opacity=".72"/><stop data-hf-id="hf-yk9a" offset="1" stop-color="#ffd66f" stop-opacity="0"/></linearGradient>
+  <radialGradient data-hf-id="hf-wxyu" id="lampGlow"><stop data-hf-id="hf-csqd" stop-color="#fff2ad" stop-opacity="1"/><stop data-hf-id="hf-84ce" offset=".25" stop-color="#ffcf61" stop-opacity=".62"/><stop data-hf-id="hf-69c5" offset="1" stop-color="#ffbd45" stop-opacity="0"/></radialGradient>
+  <radialGradient data-hf-id="hf-emlm" id="lanternGlow"><stop data-hf-id="hf-odej" stop-color="#fff3a8" stop-opacity=".95"/><stop data-hf-id="hf-kyb5" offset="1" stop-color="#ffc451" stop-opacity="0"/></radialGradient>
+  <linearGradient data-hf-id="hf-uolk" id="towerWhite" x1="0" y1="0" x2="1" y2="0"><stop data-hf-id="hf-hbcs" stop-color="#9fa8b8"/><stop data-hf-id="hf-3awq" offset=".48" stop-color="#d8dce0"/><stop data-hf-id="hf-7nmw" offset="1" stop-color="#778294"/></linearGradient>
+  <linearGradient data-hf-id="hf-bu4m" id="coat" x1="0" y1="0" x2="1" y2="1"><stop data-hf-id="hf-hlpm" stop-color="#ffd33d"/><stop data-hf-id="hf-voi9" offset="1" stop-color="#e99b12"/></linearGradient>
+  <filter data-hf-id="hf-sn67" id="glow" x="-200%" y="-200%" width="400%" height="400%"><feGaussianBlur data-hf-id="hf-469w" stdDeviation="20"/></filter>
+  <filter data-hf-id="hf-misd" id="softGlow" x="-150%" y="-150%" width="300%" height="300%"><feGaussianBlur data-hf-id="hf-m9t2" stdDeviation="8"/></filter>
+  <clipPath data-hf-id="hf-w1ui" id="towerClip"><path data-hf-id="hf-esxi" d="M460 665 L620 665 L664 1402 L416 1402 Z"/></clipPath>
+  <g data-hf-id="hf-obkc" id="starDots" fill="#dfe6fa">
+    <circle data-hf-id="hf-br9z" cx="72" cy="220" r="2.2"/><circle data-hf-id="hf-ni5g" cx="180" cy="315" r="1.5"/><circle data-hf-id="hf-44bs" cx="310" cy="180" r="2.5"/><circle data-hf-id="hf-h2ox" cx="412" cy="290" r="1.4"/><circle data-hf-id="hf-zy2q" cx="520" cy="155" r="1.7"/><circle data-hf-id="hf-17lt" cx="660" cy="270" r="2"/><circle data-hf-id="hf-2f8o" cx="770" cy="175" r="1.4"/><circle data-hf-id="hf-np0z" cx="888" cy="295" r="2.3"/><circle data-hf-id="hf-qlwp" cx="1000" cy="210" r="1.6"/><circle data-hf-id="hf-nzlv" cx="125" cy="520" r="1.5"/><circle data-hf-id="hf-ho14" cx="270" cy="465" r="2"/><circle data-hf-id="hf-2gux" cx="823" cy="510" r="1.7"/><circle data-hf-id="hf-60ki" cx="965" cy="430" r="2.1"/><circle data-hf-id="hf-q4dv" cx="82" cy="720" r="1.7"/><circle data-hf-id="hf-38fc" cx="972" cy="755" r="1.4"/><circle data-hf-id="hf-ua7y" cx="220" cy="860" r="1.3"/><circle data-hf-id="hf-s1sa" cx="846" cy="870" r="1.6"/>
+  </g>
+  <g data-hf-id="hf-5hqq" id="seaLines" fill="none" stroke="#62708e" stroke-width="3" stroke-linecap="round" opacity=".22">
+    <path data-hf-id="hf-jup2" d="M60 1040h94 M800 1000h122 M215 1150h105 M610 1125h75 M70 1285h145 M730 1238h165 M395 1365h140 M870 1440h90"/>
+    <path data-hf-id="hf-7wpc" d="M155 970h52 M510 1020h66 M890 1100h90 M330 1210h74 M535 1315h100 M130 1415h74 M715 1480h90"/>
+  </g>
+  <g data-hf-id="hf-jrpl" id="boat">
+    <path data-hf-id="hf-m5h7" d="M-72 0 L72 0 L52 28 Q0 42 -52 28 Z" fill="#39455f" stroke="#070b16" stroke-width="4"/>
+    <path data-hf-id="hf-4k6a" d="M-63 4H63" stroke="#dce0df" stroke-width="6" stroke-linecap="round"/>
+    <ellipse data-hf-id="hf-ud4s" cx="0" cy="-9" rx="19" ry="14" fill="url(#lanternGlow)" opacity=".85"/>
+    <rect data-hf-id="hf-2rfb" x="-4" y="-22" width="8" height="15" rx="2" fill="#ffe9a0"/>
+    <circle data-hf-id="hf-uwg5" cx="0" cy="-24" r="3" fill="#fff4b0"/>
+  </g>
+  <g data-hf-id="hf-7y6x" id="personNormal">
+    <circle data-hf-id="hf-0l4s" cx="0" cy="-28" r="15" fill="#f1bb92" stroke="#291c25" stroke-width="2"/>
+    <path data-hf-id="hf-vmcj" d="M-17 -11 Q0 -20 17 -11 L16 28 Q0 35 -16 28Z" fill="#5e789d" stroke="#1e2942" stroke-width="3"/>
+    <path data-hf-id="hf-1q3s" d="M-8 28 L-10 50 M8 28 L10 50" stroke="#29324a" stroke-width="7" stroke-linecap="round"/>
+    <path data-hf-id="hf-lb3d" d="M-14 -5 L-23 13 M14 -5 L23 13" stroke="#f1bb92" stroke-width="7" stroke-linecap="round"/>
+    <circle data-hf-id="hf-svii" cx="-5" cy="-29" r="2" fill="#211a24"/><circle data-hf-id="hf-iv1d" cx="5" cy="-29" r="2" fill="#211a24"/>
+  </g>
+  <g data-hf-id="hf-v9zo" id="personInfected">
+    <circle data-hf-id="hf-4z0q" cx="0" cy="-28" r="15" fill="#bd8c78" stroke="#291c25" stroke-width="2"/>
+    <path data-hf-id="hf-d9fd" d="M-17 -11 Q0 -20 17 -11 L16 28 Q0 35 -16 28Z" fill="#536f9a" stroke="#1e2942" stroke-width="3"/>
+    <path data-hf-id="hf-85ls" d="M-8 28 L-10 50 M8 28 L10 50" stroke="#29324a" stroke-width="7" stroke-linecap="round"/>
+    <path data-hf-id="hf-ejti" d="M-14 -4 L-26 12 M14 -5 L39 -20" stroke="#bd8c78" stroke-width="7" stroke-linecap="round"/>
+    <circle data-hf-id="hf-6ff4" cx="-5" cy="-29" r="4" fill="#ff454b"/><circle data-hf-id="hf-9upr" cx="5" cy="-29" r="4" fill="#ff454b"/>
+    <circle data-hf-id="hf-8eyb" cx="-5" cy="-29" r="8" fill="#ff454b" opacity=".16"/><circle data-hf-id="hf-fd54" cx="5" cy="-29" r="8" fill="#ff454b" opacity=".16"/>
+  </g>
+</defs>
+
+<!-- Shared night sky and ocean -->
+<rect data-hf-id="hf-04dq" width="1080" height="1920" fill="url(#sky)"/>
+<use data-hf-id="hf-gofs" href="#starDots" opacity=".6"/>
+<path data-hf-id="hf-auzg" d="M0 1030 Q220 1005 420 1035 T820 1025 T1080 1030 V1920 H0Z" fill="url(#sea)"/>
+<use data-hf-id="hf-y5ni" href="#seaLines"/>
+
+<!-- SCENE 1 / HOOK -->
+<g id="scene1" class="clip scene" data-hf-id="scene-hook" data-start="0" data-duration="6" data-track-index="0" opacity="0" visibility="hidden">
+  <rect data-hf-id="hf-2vuf" width="1080" height="1920" fill="#050a17" opacity=".15"/>
+  <use data-hf-id="hf-a3r0" href="#starDots" opacity=".55"/>
+  <path data-hf-id="hf-b4qw" d="M0 1060 Q150 1035 300 1060 T600 1055 T900 1060 T1080 1050 V1920 H0Z" fill="url(#sea)"/>
+  <use data-hf-id="hf-asci" href="#seaLines"/>
+  <g data-hf-id="hf-osr2" id="s1Headline" text-anchor="middle" font-family="Impact,'Arial Narrow',sans-serif" font-weight="900" font-size="57" letter-spacing="1.2">
+    <text data-hf-id="hf-hd2y" x="540" y="178" fill="#f8f6f0" stroke="#050812" stroke-width="7" paint-order="stroke">THE LIGHT SAVED HER.</text>
+    <text data-hf-id="hf-ewks" x="540" y="246" fill="#ff554f" stroke="#050812" stroke-width="7" paint-order="stroke">THEN IT BETRAYED HER.</text>
+  </g>
+  <g data-hf-id="hf-kh7h" id="s1DayTag">
+    <rect data-hf-id="hf-d08b" x="438" y="287" width="204" height="64" rx="12" fill="#101a30" stroke="#ffc65c" stroke-width="3"/>
+    <text data-hf-id="hf-fjlr" x="540" y="330" text-anchor="middle" font-size="30" letter-spacing="4" fill="#ffc65c">DAY 1</text>
+  </g>
+  <!-- Golden beam rotates from the lighthouse lantern -->
+  <g data-hf-id="hf-xyws" id="s1Beam" transform-origin="540px 540px">
+    <path data-hf-id="hf-9lw2" d="M540 540 L1110 260 L1110 830 Z" fill="url(#beamFill)" opacity=".72"/>
+    <path data-hf-id="hf-88y1" d="M540 540 L1080 390 L1080 680 Z" fill="#ffe19a" opacity=".09"/>
+  </g>
+  <g data-hf-id="hf-j814" id="s1Island">
+    <path data-hf-id="hf-twxu" d="M260 1430 L375 1390 L685 1390 L820 1430 L755 1472 L320 1472Z" fill="#1c2943"/>
+    <ellipse data-hf-id="hf-orxw" cx="540" cy="1428" rx="178" ry="26" fill="#0a1224" opacity=".7"/>
+  </g>
+  <g data-hf-id="hf-qi2q" id="s1Tower">
+    <path data-hf-id="hf-3f4l" d="M460 665 L620 665 L664 1402 L416 1402 Z" fill="url(#towerWhite)" stroke="#080d19" stroke-width="8"/>
+    <g data-hf-id="hf-yehi" clip-path="url(#towerClip)">
+      <path data-hf-id="hf-9rqt" d="M445 802 H641 V885 H445Z M432 1010 H651 V1092 H432Z M420 1218 H662 V1300 H420Z" fill="#b7443e"/>
+      <path data-hf-id="hf-fdwk" d="M460 665 L542 665 L548 1402 L416 1402Z" fill="#fff" opacity=".12"/>
+    </g>
+    <path data-hf-id="hf-ce2u" d="M443 665 L637 665 L637 626 L443 626Z" fill="#4d5a70" stroke="#080d19" stroke-width="7"/>
+    <rect data-hf-id="hf-h7fr" x="468" y="535" width="144" height="92" rx="5" fill="#253149" stroke="#080d19" stroke-width="7"/>
+    <rect data-hf-id="hf-bxdc" x="489" y="552" width="102" height="60" fill="#ffda75" opacity=".2"/>
+    <rect data-hf-id="hf-0ayg" x="498" y="557" width="84" height="53" fill="#fff0a4" opacity=".82"/>
+    <circle data-hf-id="hf-ec21" cx="540" cy="582" r="88" fill="url(#lampGlow)" opacity=".78"/>
+    <path data-hf-id="hf-fzmz" d="M440 536 L640 536 L540 447Z" fill="#b63f3b" stroke="#080d19" stroke-width="7"/>
+    <path data-hf-id="hf-2gzn" d="M460 532H620" stroke="#e9d7bd" stroke-width="7"/>
+    <rect data-hf-id="hf-p0du" x="530" y="710" width="20" height="39" rx="10" fill="#252c3b"/>
+    <rect data-hf-id="hf-dku6" x="530" y="930" width="20" height="39" rx="10" fill="#252c3b"/>
+  </g>
+  <g data-hf-id="hf-b5sk" id="s1Boats">
+    <g data-hf-id="hf-x0da" id="s1BoatA"><g data-hf-id="hf-dgl5" transform="translate(180 1340) scale(.8)"><use data-hf-id="hf-8bte" href="#boat"/><circle data-hf-id="hf-5gbn" cx="-10" cy="-25" r="3.5" fill="#ff4b4b"/><circle data-hf-id="hf-c917" cx="2" cy="-25" r="3.5" fill="#ff4b4b"/></g></g>
+    <g data-hf-id="hf-t299" id="s1BoatB"><g data-hf-id="hf-2ge4" transform="translate(335 1450) scale(.67)"><use data-hf-id="hf-daty" href="#boat"/></g></g>
+    <g data-hf-id="hf-salg" id="s1BoatC"><g data-hf-id="hf-n6n3" transform="translate(750 1365) scale(.77)"><use data-hf-id="hf-dp4z" href="#boat"/><circle data-hf-id="hf-mokj" cx="-10" cy="-25" r="3.5" fill="#ff4b4b"/><circle data-hf-id="hf-rzaz" cx="2" cy="-25" r="3.5" fill="#ff4b4b"/></g></g>
+    <g data-hf-id="hf-fs2z" id="s1BoatD"><g data-hf-id="hf-4lje" transform="translate(930 1450) scale(.62)"><use data-hf-id="hf-e3g0" href="#boat"/></g></g>
+  </g>
+</g>
+
+<!-- SCENE 2 / ALL HEADING FOR THE LIGHT -->
+<g id="scene2" class="clip scene" data-hf-id="scene-survivors" data-start="6" data-duration="8" data-track-index="0" opacity="0" visibility="hidden">
+  <rect data-hf-id="hf-0pgv" width="1080" height="1920" fill="#0a1226"/>
+  <use data-hf-id="hf-jjsc" href="#starDots" opacity=".42"/>
+  <path data-hf-id="hf-ww58" d="M0 350 Q200 315 370 355 T720 350 T1080 340 V1920 H0Z" fill="#0b142a"/>
+  <use data-hf-id="hf-b6nj" href="#seaLines"/>
+  <g data-hf-id="hf-ndg7" id="s2Header">
+    <rect data-hf-id="hf-m80i" x="125" y="125" width="830" height="102" rx="16" fill="#0c1428" stroke="#ffc65c" stroke-width="4"/>
+    <text data-hf-id="hf-a1qn" x="540" y="191" text-anchor="middle" font-size="43" letter-spacing="1.2" fill="#ffc65c">ALL HEADING FOR THE LIGHT</text>
+  </g>
+  <!-- The distant beam becomes a golden route through the water. -->
+  <path data-hf-id="hf-114c" d="M540 315 L100 1400 L980 1400 Z" fill="#ffd26b" opacity=".035"/>
+  <path data-hf-id="hf-kvw6" d="M540 340 L300 1330 M540 340 L780 1330" stroke="#f6c55c" stroke-width="2" opacity=".15" stroke-dasharray="10 22"/>
+  <g data-hf-id="hf-x80f" id="s2Boat1"><g data-hf-id="hf-xdop" transform="translate(185 560) scale(.75)"><use data-hf-id="hf-bbat" href="#boat"/></g></g>
+  <g data-hf-id="hf-mcis" id="s2Boat2"><g data-hf-id="hf-aepx" transform="translate(780 650) scale(.9)"><use data-hf-id="hf-bplu" href="#boat"/></g></g>
+  <g data-hf-id="hf-pbsd" id="s2Boat3"><g data-hf-id="hf-zozu" transform="translate(470 790) scale(.7)"><use data-hf-id="hf-c3wv" href="#boat"/></g></g>
+  <g data-hf-id="hf-5vwa" id="s2Boat4"><g data-hf-id="hf-juon" transform="translate(160 930) scale(.64)"><use data-hf-id="hf-ci7w" href="#boat"/></g></g>
+  <g data-hf-id="hf-9u0b" id="s2Boat5"><g data-hf-id="hf-izr9" transform="translate(850 1020) scale(.78)"><use data-hf-id="hf-9q2p" href="#boat"/></g></g>
+  <g data-hf-id="hf-164g" id="s2Boat6"><g data-hf-id="hf-72ci" transform="translate(540 1120) scale(.85)"><use data-hf-id="hf-a4dq" href="#boat"/></g></g>
+  <g data-hf-id="hf-1xs9" id="s2Boat7"><g data-hf-id="hf-0rs1" transform="translate(300 1195) scale(.6)"><use data-hf-id="hf-m7rm" href="#boat"/></g></g>
+  <g data-hf-id="hf-kphy" id="s2Boat8"><g data-hf-id="hf-6jgv" transform="translate(770 1260) scale(.62)"><use data-hf-id="hf-ltgl" href="#boat"/></g></g>
+  <!-- Pier railing waits at the bottom of the frame -->
+  <g data-hf-id="hf-cr4y" id="s2Pier" transform="translate(0 1395)">
+    <rect data-hf-id="hf-xk7n" x="0" y="0" width="1080" height="36" fill="#202c47"/>
+    <path data-hf-id="hf-cpl9" d="M0 6H1080 M28 8V95 M150 8V95 M272 8V95 M394 8V95 M516 8V95 M638 8V95 M760 8V95 M882 8V95 M1004 8V95" stroke="#465370" stroke-width="10"/>
+    <path data-hf-id="hf-m62z" d="M0 96H1080" stroke="#687590" stroke-width="12"/>
+  </g>
+</g>
+
+<!-- SCENE 3 / THE REVEAL -->
+<g id="scene3" class="clip scene" data-hf-id="scene-infected" data-start="14" data-duration="8" data-track-index="0" opacity="0" visibility="hidden">
+  <rect data-hf-id="hf-zfkp" width="1080" height="1920" fill="#090e20" opacity=".28"/>
+  <use data-hf-id="hf-ut38" href="#starDots" opacity=".28"/>
+  <use data-hf-id="hf-bkyk" href="#seaLines"/>
+  <g data-hf-id="hf-5wdp" id="s3Clock">
+    <text data-hf-id="hf-vtw4" x="64" y="118" font-size="44" fill="#f5f4ef" letter-spacing="1">12:15 AM</text>
+    <text data-hf-id="hf-ue4j" x="67" y="157" font-size="22" fill="#9eabc2" letter-spacing="5">NIGHT LOG</text>
+  </g>
+  <g data-hf-id="hf-inir" id="s3InfectedTag">
+    <rect data-hf-id="hf-ffqj" x="337" y="205" width="406" height="106" rx="17" fill="#0b1225" stroke="#ffc65c" stroke-width="3"/>
+    <text data-hf-id="hf-f5l7" x="540" y="274" text-anchor="middle" font-size="49" letter-spacing="1.5" fill="#ff5b57">INFECTED</text>
+  </g>
+  <g data-hf-id="hf-7h4w" id="s3BoatA"><g data-hf-id="hf-m2kv" transform="translate(240 620)">
+    <path data-hf-id="hf-yndx" d="M-180 15H180L142 78Q0 104 -142 78Z" fill="#7d4c3b" stroke="#070a14" stroke-width="7"/>
+    <path data-hf-id="hf-tpm9" d="M-180 15H180" stroke="#f2e7ce" stroke-width="9"/>
+    <use data-hf-id="hf-klam" href="#personNormal" transform="translate(-105 -4) scale(.94)"/>
+    <use data-hf-id="hf-r7nr" href="#personInfected" transform="translate(-28 -4) scale(.94)"/>
+    <use data-hf-id="hf-4sl6" href="#personNormal" transform="translate(50 -4) scale(.94)"/>
+    <use data-hf-id="hf-equ3" href="#personNormal" transform="translate(125 -4) scale(.94)"/>
+    </g>
+  </g>
+  <g data-hf-id="hf-icmj" id="s3BoatB"><g data-hf-id="hf-656b" transform="translate(765 910)">
+    <path data-hf-id="hf-fbqx" d="M-180 15H180L142 78Q0 104 -142 78Z" fill="#7d4c3b" stroke="#070a14" stroke-width="7"/>
+    <path data-hf-id="hf-p0it" d="M-180 15H180" stroke="#f2e7ce" stroke-width="9"/>
+    <use data-hf-id="hf-ynrm" href="#personNormal" transform="translate(-105 -4) scale(.94)"/>
+    <use data-hf-id="hf-0x20" href="#personNormal" transform="translate(-28 -4) scale(.94)"/>
+    <use data-hf-id="hf-4pdj" href="#personInfected" transform="translate(50 -4) scale(.94)"/>
+    <use data-hf-id="hf-e5qz" href="#personNormal" transform="translate(125 -4) scale(.94)"/>
+    </g>
+  </g>
+  <g data-hf-id="hf-eeii" id="s3BoatC"><g data-hf-id="hf-xhws" transform="translate(515 1210)">
+    <path data-hf-id="hf-m9p9" d="M-205 15H205L160 83Q0 108 -160 83Z" fill="#7d4c3b" stroke="#070a14" stroke-width="7"/>
+    <path data-hf-id="hf-o85x" d="M-205 15H205" stroke="#f2e7ce" stroke-width="9"/>
+    <use data-hf-id="hf-lngc" href="#personNormal" transform="translate(-132 -4) scale(.94)"/>
+    <use data-hf-id="hf-hhhi" href="#personNormal" transform="translate(-44 -4) scale(.94)"/>
+    <use data-hf-id="hf-ju7y" href="#personInfected" transform="translate(44 -4) scale(.94)"/>
+    <use data-hf-id="hf-7ean" href="#personNormal" transform="translate(132 -4) scale(.94)"/>
+    </g>
+  </g>
+  <path data-hf-id="hf-glii" id="s3Pulse" d="M0 0" stroke="#ff554f" stroke-width="2" fill="none" opacity="0"/>
+</g>
+
+<!-- SCENE 4 / THE CLIMB -->
+<g id="scene4" class="clip scene" data-hf-id="scene-climb" data-start="22" data-duration="10" data-track-index="0" opacity="0" visibility="hidden">
+  <rect data-hf-id="hf-2z2r" width="1080" height="1920" fill="#0c142b"/>
+  <use data-hf-id="hf-y5jp" href="#starDots" opacity=".32"/>
+  <g data-hf-id="hf-5xn8" id="s4Clock">
+    <text data-hf-id="hf-4o6t" x="58" y="120" font-size="45" fill="#f7f5ef">12:21 AM</text>
+    <text data-hf-id="hf-0ous" x="62" y="158" font-size="22" fill="#9daac3" letter-spacing="4">TOWER ACCESS</text>
+  </g>
+  <g data-hf-id="hf-ki82" id="climbWorld">
+    <path data-hf-id="hf-ppaq" d="M70 1510 L845 1285 L260 1070 L900 850 L260 625 L850 410 L430 210" fill="none" stroke="#28344f" stroke-width="80" stroke-linejoin="round"/>
+    <path data-hf-id="hf-93uj" d="M70 1510 L845 1285 L260 1070 L900 850 L260 625 L850 410 L430 210" fill="none" stroke="#4b5e83" stroke-width="54" stroke-linejoin="round"/>
+    <path data-hf-id="hf-28xz" d="M70 1510 L845 1285 L260 1070 L900 850 L260 625 L850 410 L430 210" fill="none" stroke="#8492af" stroke-width="5" stroke-dasharray="18 29" stroke-linejoin="round" opacity=".55"/>
+    <path data-hf-id="hf-euhl" d="M72 1477 L842 1252 L260 1037 L900 817 L260 592 L850 377 L432 177" fill="none" stroke="#ffc65c" stroke-width="4" stroke-linejoin="round" opacity=".85"/>
+    <g data-hf-id="hf-fzcy" font-family="Impact,'Arial Narrow',sans-serif" fill="#74809b" opacity=".35" font-size="66">
+      <text data-hf-id="hf-oaur" x="35" y="1260">62</text><text data-hf-id="hf-e7he" x="870" y="1035">82</text><text data-hf-id="hf-b1h5" x="34" y="795">102</text><text data-hf-id="hf-9dna" x="820" y="575">122</text><text data-hf-id="hf-nm7l" x="48" y="365">142</text>
+    </g>
+    <!-- Tiny landmark lamps along the climb -->
+    <g data-hf-id="hf-0nix" fill="#ffc65c"><circle data-hf-id="hf-n84h" cx="85" cy="1487" r="6"/><circle data-hf-id="hf-75mi" cx="845" cy="1260" r="6"/><circle data-hf-id="hf-i5ep" cx="260" cy="1046" r="6"/><circle data-hf-id="hf-195p" cx="900" cy="826" r="6"/><circle data-hf-id="hf-zgc5" cx="260" cy="601" r="6"/><circle data-hf-id="hf-0fv6" cx="850" cy="386" r="6"/></g>
+    <!-- Marina, designed as a separate vector character so she can run along the route -->
+    <g data-hf-id="hf-5kmx" id="marina" transform="translate(0 0)">
+      <ellipse data-hf-id="hf-wrhe" cx="0" cy="2" rx="36" ry="9" fill="#030711" opacity=".5"/>
+      <g data-hf-id="hf-g6li" id="marinaLegs">
+        <path data-hf-id="hf-pw96" d="M-12 -42 L-18 -4 L-28 21" fill="none" stroke="#202943" stroke-width="16" stroke-linecap="round"/>
+        <path data-hf-id="hf-agce" d="M13 -42 L18 -6 L30 15" fill="none" stroke="#202943" stroke-width="16" stroke-linecap="round"/>
+        <path data-hf-id="hf-jibm" d="M-29 20 L-9 22 M26 15 L42 18" stroke="#11192c" stroke-width="13" stroke-linecap="round"/>
+      </g>
+      <g data-hf-id="hf-xsvs" id="marinaArms">
+        <path data-hf-id="hf-fq1v" d="M-21 -100 L-40 -68 L-44 -43" fill="none" stroke="#e7a21c" stroke-width="15" stroke-linecap="round"/>
+        <path data-hf-id="hf-32nj" d="M21 -100 L42 -74 L47 -53" fill="none" stroke="#e7a21c" stroke-width="15" stroke-linecap="round"/>
+        <circle data-hf-id="hf-a29b" cx="-44" cy="-41" r="9" fill="#f1b48a"/><circle data-hf-id="hf-ddq0" cx="47" cy="-51" r="9" fill="#f1b48a"/>
+      </g>
+      <path data-hf-id="hf-8m4i" d="M-24 -112 Q0 -124 24 -112 L31 -45 Q0 -33 -31 -45Z" fill="url(#coat)" stroke="#33251d" stroke-width="4"/>
+      <path data-hf-id="hf-soj5" d="M0 -111V-41" stroke="#b77a13" stroke-width="3"/>
+      <path data-hf-id="hf-0nok" d="M-25 -72H25" stroke="#f8e4a1" stroke-width="5"/>
+      <circle data-hf-id="hf-i18t" cx="5" cy="-94" r="3" fill="#62421c"/><circle data-hf-id="hf-7uh2" cx="5" cy="-77" r="3" fill="#62421c"/><circle data-hf-id="hf-2ana" cx="5" cy="-59" r="3" fill="#62421c"/>
+      <path data-hf-id="hf-ga21" d="M-22 -139 Q-28 -166 -3 -173 Q24 -175 26 -148 L19 -128 L-16 -128Z" fill="#5f3528"/>
+      <circle data-hf-id="hf-a88c" cx="0" cy="-143" r="25" fill="#f0b58b" stroke="#38221c" stroke-width="3"/>
+      <circle data-hf-id="hf-z2ed" cx="18" cy="-169" r="12" fill="#633726"/>
+      <path data-hf-id="hf-sqo9" d="M-23 -151 Q-24 -175 0 -175 Q22 -173 24 -151 L16 -161 L-8 -160Z" fill="#633726"/>
+      <circle data-hf-id="hf-81c9" cx="-8" cy="-143" r="2.8" fill="#231b20"/><circle data-hf-id="hf-icug" cx="8" cy="-143" r="2.8" fill="#231b20"/>
+      <path data-hf-id="hf-x1b2" d="M-4 -132 Q0 -129 4 -132" stroke="#9e5f4b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </g>
+  </g>
+  <g data-hf-id="hf-moqs" id="s4GoalGlow" opacity="0">
+    <circle data-hf-id="hf-gdlu" cx="430" cy="220" r="140" fill="url(#lampGlow)"/>
+    <text data-hf-id="hf-c6nz" x="430" y="125" text-anchor="middle" font-size="25" fill="#ffc65c" letter-spacing="4">THE LAMP</text>
+  </g>
+</g>
+
+<!-- SCENE 5 / LIGHT OUT -->
+<g id="scene5" class="clip scene" data-hf-id="scene-lightout" data-start="32" data-duration="8" data-track-index="0" opacity="0" visibility="hidden">
+  <rect data-hf-id="hf-zoro" width="1080" height="1920" fill="#050916"/>
+  <use data-hf-id="hf-c58k" href="#starDots" opacity=".42"/>
+  <g data-hf-id="hf-ux07" id="s5Clock">
+    <text data-hf-id="hf-mnyu" x="58" y="120" font-size="45" fill="#f7f5ef">12:22 AM</text>
+    <text data-hf-id="hf-ol1z" x="62" y="158" font-size="22" fill="#9daac3" letter-spacing="4">NIGHT LOG</text>
+  </g>
+  <path data-hf-id="hf-gdv0" d="M0 1190 Q220 1150 410 1185 T800 1182 T1080 1180 V1920H0Z" fill="#091123"/>
+  <use data-hf-id="hf-x3mh" href="#seaLines" opacity=".45"/>
+  <path data-hf-id="hf-yfia" d="M225 1420 L335 1382 L755 1382 L862 1420 L790 1462 L300 1462Z" fill="#1b263f"/>
+  <g data-hf-id="hf-e9f2" id="s5Tower">
+    <path data-hf-id="hf-bmq2" d="M470 700 L610 700 L650 1390 L430 1390 Z" fill="#737d8d" stroke="#050916" stroke-width="8"/>
+    <path data-hf-id="hf-f7kr" d="M459 835H618L623 916H454Z M447 1035H630L634 1114H442Z M435 1232H641L646 1311H430Z" fill="#9e3938"/>
+    <path data-hf-id="hf-guqw" d="M470 700H610V660H470Z" fill="#252f45" stroke="#050916" stroke-width="7"/>
+    <!-- Lamp room deliberately black: no beam, no glow -->
+    <rect data-hf-id="hf-qst2" x="487" y="565" width="106" height="96" rx="3" fill="#050711" stroke="#050916" stroke-width="7"/>
+    <path data-hf-id="hf-kkpt" d="M445 565 L635 565 L540 480Z" fill="#8f3437" stroke="#050916" stroke-width="7"/>
+    <path data-hf-id="hf-pl5g" d="M470 1390H610" stroke="#353e54" stroke-width="12"/>
+    <rect data-hf-id="hf-nbsl" x="527" y="765" width="19" height="38" rx="9" fill="#171d2b"/>
+    <rect data-hf-id="hf-v40q" x="527" y="1110" width="19" height="38" rx="9" fill="#171d2b"/>
+  </g>
+  <g data-hf-id="hf-5bwz" id="s5KeeperHouse"><g data-hf-id="hf-imjf" transform="translate(690 1280)">
+    <path data-hf-id="hf-mqso" d="M-20 53 L100 -4 L230 53Z" fill="#222c43" stroke="#060b18" stroke-width="7"/>
+    <rect data-hf-id="hf-hhvx" x="0" y="53" width="210" height="145" fill="#1e2940" stroke="#060b18" stroke-width="7"/>
+    <text data-hf-id="hf-p3nr" x="105" y="35" text-anchor="middle" font-size="24" fill="#dbe0e9" letter-spacing="1">LIGHTHOUSE</text>
+    <rect data-hf-id="hf-di99" x="25" y="82" width="48" height="55" rx="2" fill="#ffcc55"/>
+    <path data-hf-id="hf-dxx0" d="M49 82V137 M25 109H73" stroke="#795626" stroke-width="4"/>
+    <rect data-hf-id="hf-bnb5" x="137" y="82" width="48" height="55" rx="2" fill="#ffcc55"/>
+    <path data-hf-id="hf-lsnt" d="M161 82V137 M137 109H185" stroke="#795626" stroke-width="4"/>
+    <rect data-hf-id="hf-pkei" x="88" y="122" width="39" height="76" fill="#0b1020"/>
+    <circle data-hf-id="hf-41k1" cx="118" cy="162" r="3" fill="#7d6542"/>
+    </g>
+  </g>
+  <!-- A brief glass-shatter motif before the scene disappears. -->
+  <g data-hf-id="hf-6ajn" id="s5Shards" transform="translate(540 610)" opacity="0" stroke="#e9e9e4" stroke-width="4" fill="none" stroke-linecap="round">
+    <path data-hf-id="hf-wmud" d="M-30 -40 L-6 -7 L-43 17 L-17 48 M8 -50 L5 -14 L38 -24 L22 9 L46 32 M-1 1 L-28 10 M-2 1 L20 55"/>
+  </g>
+  <rect data-hf-id="hf-wlj8" id="fadeBlack" width="1080" height="1920" fill="#000" opacity="0"/>
+</g>
+</svg>
+
+<!-- Narration captions; each word receives a timed highlight in the GSAP timeline. -->
+<div id="cap1" class="clip caption" data-hf-id="caption-1" data-start="0" data-duration="6" data-track-index="2" aria-label="Midnight. A black sea. Marina lights the lighthouse, and for the lost boats, it's the only hope left."></div>
+<div id="cap2" class="clip caption" data-hf-id="caption-2" data-start="6" data-duration="8" data-track-index="2" aria-label="Every survivor on the water turns toward the beam. Dozens of boats. One light. One chance."></div>
+<div id="cap3" class="clip caption danger" data-hf-id="caption-3" data-start="14" data-duration="8" data-track-index="2" aria-label="But at 12:15, Marina sees it. In every single boat, one passenger was already infected."></div>
+<div id="cap4" class="clip caption marina" data-hf-id="caption-4" data-start="22" data-duration="10" data-track-index="2" aria-label="Red eyes reach the shore. Marina sprints up the tower, and the only way to stop them is the lamp she lit."></div>
+<div id="cap5" class="clip caption danger" data-hf-id="caption-5" data-start="32" data-duration="8" data-track-index="2" aria-label="She smashed the lamp. 12:22 AM. The sea went silent, and the island vanished into the dark."></div>
+<div data-hf-id="hf-h60x" class="grain"></div><div data-hf-id="hf-q7bi" class="vignette"></div>
+<div data-hf-id="hf-h7rx" class="sr-only" id="transcript">Midnight. A black sea. Marina lights the lighthouse, and for the lost boats, it's the only hope left. Every survivor on the water turns toward the beam. Dozens of boats. One light. One chance. But at 12:15, Marina sees it. In every single boat, one passenger was already infected. Red eyes reach the shore. Marina sprints up the tower, and the only way to stop them is the lamp she lit. She smashed the lamp. 12:22 AM. The sea went silent, and the island vanished into the dark.</div>
+</div>
+
+<script>
+(function(){
+  const tl = gsap.timeline({paused:true, defaults:{ease:"power2.out"}});
+  window.__timelines = window.__timelines || {};
+
+  const scenes = ["#scene1", "#scene2", "#scene3", "#scene4", "#scene5"];
+  const captions = [
+    {id:"#cap1", text:"Midnight. A black sea. Marina lights the lighthouse, and for the lost boats, it's the only hope left.", start:0, end:6, color:"#ffc65c"},
+    {id:"#cap2", text:"Every survivor on the water turns toward the beam. Dozens of boats. One light. One chance.", start:6, end:14, color:"#ffc65c"},
+    {id:"#cap3", text:"But at 12:15, Marina sees it. In every single boat, one passenger was already infected.", start:14, end:22, color:"#ff554f"},
+    {id:"#cap4", text:"Red eyes reach the shore. Marina sprints up the tower, and the only way to stop them is the lamp she lit.", start:22, end:32, color:"#ffbd28"},
+    {id:"#cap5", text:"She smashed the lamp. 12:22 AM. The sea went silent, and the island vanished into the dark.", start:32, end:40, color:"#ff554f"}
+  ];
+  captions.forEach(c=>{
+    const el=document.querySelector(c.id);
+    c.words=c.text.split(/\s+/);
+    c.words.forEach((w,i)=>{
+      const span=document.createElement("span");
+      span.className="word";
+      span.textContent=w+(i===c.words.length-1?"":" ");
+      el.appendChild(span);
+    });
+  });
+
+  gsap.set(scenes,{autoAlpha:0});
+  gsap.set(".caption",{autoAlpha:0});
+  tl.set("#scene1",{autoAlpha:1},0);
+  tl.set("#cap1",{autoAlpha:1},0);
+
+  // Slow cinematic camera drift in the opening environment.
+  tl.fromTo("#scene1",{scale:1,x:0,y:0,transformOrigin:"50% 50%"},{scale:1.045,x:-8,y:-10,duration:6,ease:"sine.inOut"},0);
+  tl.fromTo("#s1Beam",{rotation:-30,svgOrigin:"540 540"},{rotation:32,svgOrigin:"540 540",duration:5.65,ease:"sine.inOut"},0.2);
+  tl.fromTo("#s1Headline",{y:16,opacity:0.25},{y:0,opacity:1,duration:.6,ease:"back.out(1.25)"},0.05);
+  tl.fromTo("#s1DayTag",{scale:.86,opacity:0,transformOrigin:"50% 50%"},{scale:1,opacity:1,duration:.42,ease:"back.out(1.8)"},.4);
+  tl.to("#s1Tower",{y:-7,duration:2.7,repeat:1,yoyo:true,ease:"sine.inOut"},1.2);
+  tl.to("#s1Boats > g",{x:9,duration:2.2,stagger:.15,repeat:1,yoyo:true,ease:"sine.inOut"},.5);
+
+  // The boats converge toward the pier without revealing the infection yet.
+  tl.to("#scene1",{autoAlpha:0,duration:.22,ease:"none"},5.78);
+  tl.to("#cap1",{autoAlpha:0,duration:.16,ease:"none"},5.84);
+  tl.set("#scene2",{autoAlpha:1},5.8);
+  tl.set("#cap2",{autoAlpha:1},5.9);
+  tl.fromTo("#s2Header",{y:-28,opacity:0},{y:0,opacity:1,duration:.55,ease:"power3.out"},5.85);
+  tl.to("#s2Boat1",{x:45,y:690,duration:7.2,ease:"sine.inOut"},6.2);
+  tl.to("#s2Boat2",{x:-105,y:680,duration:7.2,ease:"sine.inOut"},6.05);
+  tl.to("#s2Boat3",{x:35,y:520,duration:7.1,ease:"sine.inOut"},6.1);
+  tl.to("#s2Boat4",{x:75,y:390,duration:7.0,ease:"sine.inOut"},6.25);
+  tl.to("#s2Boat5",{x:-58,y:300,duration:7.0,ease:"sine.inOut"},6.15);
+  tl.to("#s2Boat6",{x:-30,y:205,duration:7.1,ease:"sine.inOut"},6.05);
+  tl.to("#s2Boat7",{x:55,y:140,duration:7.0,ease:"sine.inOut"},6.3);
+  tl.to("#s2Boat8",{x:-28,y:85,duration:7.0,ease:"sine.inOut"},6.2);
+  tl.to("#scene2",{scale:1.025,transformOrigin:"50% 50%",duration:7.7,ease:"sine.inOut"},6.1);
+
+  // The reveal: each infected passenger turns toward their nearest survivor.
+  tl.to("#scene2",{autoAlpha:0,duration:.22,ease:"none"},13.78);
+  tl.to("#cap2",{autoAlpha:0,duration:.16,ease:"none"},13.84);
+  tl.set("#scene3",{autoAlpha:1},13.8);
+  tl.set("#cap3",{autoAlpha:1},13.9);
+  tl.fromTo("#s3InfectedTag",{scale:.88,opacity:0,transformOrigin:"50% 50%"},{scale:1,opacity:1,duration:.42,ease:"back.out(1.7)"},14.05);
+  tl.fromTo("#s3BoatA",{x:-90,opacity:0},{x:0,opacity:1,duration:.65,ease:"power3.out"},14.1);
+  tl.fromTo("#s3BoatB",{x:80,opacity:0},{x:0,opacity:1,duration:.65,ease:"power3.out"},14.35);
+  tl.fromTo("#s3BoatC",{y:70,opacity:0},{y:0,opacity:1,duration:.65,ease:"power3.out"},14.6);
+  tl.to("#s3BoatA",{x:10,duration:1.8,repeat:2,yoyo:true,ease:"sine.inOut"},15.2);
+  tl.to("#s3BoatB",{x:-9,duration:1.6,repeat:2,yoyo:true,ease:"sine.inOut"},15.0);
+  tl.fromTo("#s3InfectedTag text",{fill:"#ff5b57"},{fill:"#ff2b38",duration:.22,repeat:7,yoyo:true,ease:"sine.inOut"},15.1);
+
+  // Marina races up the impossible zigzag. The world rises slightly as if the camera follows.
+  tl.to("#scene3",{autoAlpha:0,duration:.22,ease:"none"},21.78);
+  tl.to("#cap3",{autoAlpha:0,duration:.16,ease:"none"},21.84);
+  tl.set("#scene4",{autoAlpha:1},21.8);
+  tl.set("#cap4",{autoAlpha:1},21.9);
+  tl.set("#marina",{x:165,y:1510,scale:.94},22);
+  tl.to("#marina",{x:820,y:1285,scale:1,duration:1.9,ease:"power2.inOut"},22.25);
+  tl.to("#marina",{x:260,y:1070,duration:1.8,ease:"power2.inOut"},24.15);
+  tl.to("#marina",{x:900,y:850,duration:1.8,ease:"power2.inOut"},25.95);
+  tl.to("#marina",{x:260,y:625,duration:1.8,ease:"power2.inOut"},27.75);
+  tl.to("#marina",{x:430,y:330,duration:1.05,ease:"power2.in"},29.55);
+  tl.to("#climbWorld",{y:-95,duration:9.4,ease:"sine.inOut"},22.2);
+  tl.to("#marinaLegs",{rotation:14,transformOrigin:"50% 0%",duration:.24,repeat:15,yoyo:true,ease:"sine.inOut"},22.25);
+  tl.to("#marinaArms",{rotation:-10,transformOrigin:"50% 30%",duration:.24,repeat:15,yoyo:true,ease:"sine.inOut"},22.25);
+  tl.to("#s4GoalGlow",{opacity:1,duration:.5,ease:"power2.out"},29.6);
+  tl.to("#s4GoalGlow",{opacity:.25,duration:.3},30.7);
+
+  // Light out: hard visual silence, broken lamp, then the cliffhanger cut to black.
+  tl.to("#scene4",{autoAlpha:0,duration:.22,ease:"none"},31.78);
+  tl.to("#cap4",{autoAlpha:0,duration:.16,ease:"none"},31.84);
+  tl.set("#scene5",{autoAlpha:1},31.8);
+  tl.set("#cap5",{autoAlpha:1},31.9);
+  tl.fromTo("#s5Tower",{y:0,opacity:1},{y:5,opacity:1,duration:5.8,ease:"sine.inOut"},32);
+  tl.fromTo("#s5KeeperHouse",{opacity:0.45,y:20},{opacity:1,y:0,duration:1.2,ease:"power2.out"},32.1);
+  tl.fromTo("#s5Shards",{opacity:0,scale:.6,transformOrigin:"50% 50%"},{opacity:1,scale:1.25,duration:.15,ease:"power2.out"},32.55);
+  tl.to("#s5Shards",{opacity:0,scale:1.8,duration:.45,ease:"power2.out"},32.7);
+  tl.to("#s5KeeperHouse rect[fill='#ffcc55']",{fill:"#d89f38",duration:1.1,ease:"sine.inOut"},34.0);
+  tl.to("#cap5",{y:12,duration:4.7,ease:"sine.inOut"},32.2);
+  tl.to("#fadeBlack",{opacity:1,duration:.12,ease:"none"},39.88);
+  tl.to("#cap5",{autoAlpha:0,duration:.08,ease:"none"},39.88);
+
+  // Timed word-by-word caption highlighting, paced to each narration sentence.
+  captions.forEach(c=>{
+    const spans=Array.from(document.querySelectorAll(c.id+" .word"));
+    const available=(c.end-c.start)-.42;
+    const step=available/spans.length;
+    spans.forEach((span,i)=>{
+      const t=c.start+.2+i*step;
+      if(i>0) tl.set(spans[i-1],{color:"#f7f5ef",scale:1},t);
+      tl.to(span,{color:c.color,scale:1.04,duration:Math.min(.09,step*.34),ease:"power1.out"},t);
+      tl.to(span,{scale:1,duration:Math.min(.08,step*.3),ease:"power1.in"},t+Math.min(.09,step*.34));
+    });
+    if(spans.length) tl.set(spans[spans.length-1],{color:"#f7f5ef",scale:1},c.end-.24);
+  });
+
+  // Cue sheet documents the intended sound design for a later audio pass.
+  // 0s: low drone + sea; 14s: heartbeat; 22s: rapid footsteps; 32.5s: glass crack; 32.8s onward: silence.
+  window.__storyCueSheet = [
+    {time:0, cue:"low drone and ocean waves"},
+    {time:14, cue:"heartbeat begins"},
+    {time:22, cue:"fast footsteps rise with Marina"},
+    {time:32.55, cue:"glass crack"},
+    {time:32.8, cue:"total silence"}
+  ];
+  window.__timelines["main"] = tl;
+  tl.seek(0);
+  // Play when opened directly; HyperFrames can still seek the registered master timeline for rendering.
+  if(!window.__HYPERFRAMES_RENDERER__) tl.play(0);
+})();
+</script>
+</body>
+</html>

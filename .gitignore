@@ -1,0 +1,20 @@
+# Local dependency folders — all dependencies are project-local by design,
+# never committed and never installed globally.
+node_modules/
+.venv/
+
+# HyperFrames caches & state, redirected here from C:\ (see scripts/hf-runner.js)
+.cache/
+.hyperframes/
+
+# Local binary downloads (restorable via pip: imageio-ffmpeg + static-ffmpeg)
+tools/ffmpeg/
+
+# Render output
+renders/
+*.mp4
+
+# HyperFrames / tooling local state
+.hyperframes/
+*.log
+.DS_Store

@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>Move More — Exercise Benefits | HyperFrames</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    :root {
+      --paper: #f0ead9;
+      --ink: #101010;
+      --pink: #f064a7;
+      --yellow: #f8c918;
+      --green: #238e54;
+      --orange: #f0541b;
+      --blue: #73d8e6;
+      --muted: #625f57;
+      --display: "Arial Black", "Arial", sans-serif;
+      --mono: "JetBrains Mono", "Courier New", monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+    body { font-family: Arial, Helvetica, sans-serif; color: var(--ink); }
+    #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+    .topline { position:absolute; z-index:20; left:78px; right:78px; top:66px; display:flex; align-items:center; justify-content:space-between; font: 22px var(--mono); letter-spacing:.15em; text-transform:uppercase; }
+    .pill { border:2px solid var(--ink); border-radius:50px; padding:11px 22px 9px; background:var(--paper); }
+    .bottomline { position:absolute; z-index:20; left:78px; right:78px; bottom:56px; display:flex; justify-content:space-between; align-items:center; font: 21px var(--mono); letter-spacing:.1em; text-transform:uppercase; }
+    .progress-track { position:absolute; z-index:30; left:0; bottom:0; width:100%; height:12px; background:rgba(16,16,16,.13); }
+    #progress { width:100%; height:100%; background:var(--pink); transform:scaleX(0); transform-origin:left center; }
+    .scene { position:absolute; inset:0; padding:0; opacity:0; visibility:hidden; overflow:hidden; }
+    .scene.active { opacity:1; visibility:visible; }
+    .scene-label { position:absolute; left:80px; top:160px; font:22px var(--mono); letter-spacing:.15em; text-transform:uppercase; }
+    .big { position:absolute; left:76px; top:250px; width:1240px; font-family:var(--display); font-weight:900; font-size:174px; line-height:.88; letter-spacing:-.065em; text-transform:uppercase; }
+    .big .pink { color:var(--pink); }
+    .big .green { color:var(--green); }
+    .big .yellow { color:var(--yellow); -webkit-text-stroke:2px var(--ink); paint-order:stroke fill; }
+    .copy { position:absolute; left:84px; top:650px; width:900px; font-size:31px; line-height:1.32; letter-spacing:-.02em; }
+    .tag-row { position:absolute; left:80px; top:810px; display:flex; gap:20px; align-items:center; }
+    .tag { border:4px solid var(--ink); padding:16px 21px 13px; font:18px var(--mono); letter-spacing:.08em; text-transform:uppercase; box-shadow:5px 5px 0 var(--ink); background:var(--paper); }
+    .tag.pink-bg { background:var(--pink); }
+    .tag.green-bg { background:var(--green); color:white; }
+    .tag.yellow-bg { background:var(--yellow); }
+    .art { position:absolute; right:110px; top:225px; width:560px; height:560px; }
+    .art-card { position:absolute; inset:28px 18px 18px 28px; background:var(--pink); border:5px solid var(--ink); transform:rotate(5deg); box-shadow:18px 18px 0 var(--orange); display:flex; justify-content:center; align-items:center; }
+    .art-card.yellow-card { background:var(--yellow); box-shadow:18px 18px 0 var(--pink); }
+    .art-card.green-card { background:var(--green); box-shadow:18px 18px 0 var(--yellow); }
+    .art-circle { width:370px; height:370px; border:5px solid var(--ink); border-radius:50%; display:flex; align-items:center; justify-content:center; }
+    .art-caption { position:absolute; bottom:7px; right:6px; z-index:3; font:20px var(--mono); text-transform:uppercase; letter-spacing:.1em; background:var(--paper); border:3px solid var(--ink); padding:12px 16px; }
+    .corner-shape { position:absolute; border:5px solid var(--ink); border-radius:50%; }
+    .shape-yellow { width:360px; height:360px; left:-145px; bottom:-145px; background:var(--yellow); }
+    .shape-pink { width:210px; height:210px; right:130px; bottom:-120px; background:var(--pink); }
+    .shape-green { width:120px; height:120px; right:425px; top:140px; background:var(--green); }
+    .decor-cross { position:absolute; right:110px; bottom:185px; width:92px; height:92px; }
+    .decor-cross:before,.decor-cross:after { content:""; position:absolute; background:var(--ink); }
+    .decor-cross:before { width:100%; height:9px; top:42px; }
+    .decor-cross:after { height:100%; width:9px; left:42px; }
+    .small-kicker { font:20px var(--mono); letter-spacing:.12em; text-transform:uppercase; }
+    .benefit-number { position:absolute; right:91px; top:135px; font:23px var(--mono); letter-spacing:.12em; background:var(--yellow); border:3px solid var(--ink); padding:13px 18px; }
+    .split-cards { position:absolute; right:120px; top:250px; width:640px; display:flex; flex-direction:column; gap:24px; }
+    .mini-card { min-height:215px; border:5px solid var(--ink); padding:28px 30px; background:var(--yellow); box-shadow:12px 12px 0 var(--ink); display:flex; align-items:center; gap:25px; }
+    .mini-card:nth-child(2) { background:var(--pink); margin-left:44px; }
+    .mini-card h3 { font: bold 41px var(--display); text-transform:uppercase; line-height:.94; margin-bottom:13px; }
+    .mini-card p { font-size:23px; line-height:1.23; }
+    .mini-icon { width:125px; flex:0 0 125px; }
+    .scene1 .big { top:258px; width:1130px; font-size:150px; }
+    .scene1 .copy { top:670px; }
+    .scene2 .big, .scene3 .big { top:265px; width:1010px; font-size:144px; }
+    .scene2 .copy, .scene3 .copy { top:665px; }
+    .scene4 .big { top:255px !important; width:920px; font-size:128px !important; }
+    .scene4 .copy { top:735px !important; width:800px; font-size:27px; }
+    .scene5 .big { top:265px; width:1060px; font-size:128px; }
+    .scene5 .copy { top:625px; width:950px; }
+    .steps { position:absolute; right:150px; top:285px; width:520px; display:flex; flex-direction:column; gap:23px; }
+    .step { border:5px solid var(--ink); background:var(--paper); padding:20px 26px; display:flex; align-items:center; gap:22px; font:28px var(--display); text-transform:uppercase; box-shadow:9px 9px 0 var(--ink); }
+    .step .num { display:flex; align-items:center; justify-content:center; width:60px; height:60px; flex:0 0 60px; background:var(--green); color:white; border:3px solid var(--ink); border-radius:50%; font:24px var(--mono); }
+    .end-stamp { position:absolute; right:170px; bottom:125px; transform:rotate(-7deg); background:var(--pink); border:5px solid var(--ink); padding:20px 28px; font:25px var(--mono); letter-spacing:.1em; box-shadow:10px 10px 0 var(--orange); }
+    .outline-text { color:transparent; -webkit-text-stroke:3px var(--ink); }
+    svg { overflow:visible; }
+    .heart-beat { transform-origin:center; }
+    @media (max-width: 1920px) { html, body { width:1920px; height:1080px; } }
+  </style>
+</head>
+<body>
+  <div data-hf-id="hf-j7pz" id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1920" data-height="1080">
+    <div data-hf-id="hf-o5lv" class="topline"><div data-hf-id="hf-cabp">THE EVERYDAY HEALTH FILE — 01</div><div data-hf-id="hf-io33" class="pill">30 SEC / MOVE BETTER</div></div>
+
+    <!-- SCENE 1 / HOOK -->
+    <section data-hf-id="hf-lwah" class="scene scene1" data-start="0" data-duration="6">
+      <div data-hf-id="hf-h8wv" class="scene-label">A tiny habit. A big return.</div>
+      <h1 data-hf-id="hf-syp0" class="big"><span data-hf-id="hf-zaep" class="line1">MOVE</span><br data-hf-id="hf-x5px"><span data-hf-id="hf-c6iy" class="pink line2">MORE.</span><br data-hf-id="hf-rsrt"><span data-hf-id="hf-edfy" class="line3">FEEL <span data-hf-id="hf-s483" class="pink">BETTER.</span></span></h1>
+      <p data-hf-id="hf-jydo" class="copy">Exercise isn't just about changing how you look. It's about helping your body and mind work at their best.</p>
+      <div data-hf-id="hf-dpvb" class="tag-row"><div data-hf-id="hf-z9hz" class="tag green-bg">BODY</div><div data-hf-id="hf-1dc0" class="tag">MIND</div><div data-hf-id="hf-8i93" class="tag yellow-bg">EVERYDAY LIFE</div></div>
+      <div data-hf-id="hf-y0ev" class="art">
+        <div data-hf-id="hf-ljj6" class="art-card"><div data-hf-id="hf-5flo" class="art-circle"><svg data-hf-id="hf-gjmr" width="300" height="300" viewBox="0 0 300 300" aria-label="Abstract person running"><g data-hf-id="hf-2605" fill="none" stroke="#101010" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><circle data-hf-id="hf-wugo" cx="180" cy="55" r="29" fill="#f8c918"/><path data-hf-id="hf-q4ua" d="M163 105 L127 157 L183 179 L222 137"/><path data-hf-id="hf-yxbg" d="M142 135 L90 121 L63 151"/><path data-hf-id="hf-ztki" d="M181 179 L145 236 L95 254"/><path data-hf-id="hf-pk3b" d="M184 180 L235 219 L263 216"/></g><path data-hf-id="hf-1z1x" d="M47 275 L94 275 M213 268 L266 268" stroke="#101010" stroke-width="8" stroke-linecap="round"/></svg></div></div>
+        <div data-hf-id="hf-8vbp" class="art-caption">Start where you are ↗</div>
+      </div>
+      <div data-hf-id="hf-qwll" class="corner-shape shape-yellow"></div><div data-hf-id="hf-v6ia" class="corner-shape shape-green"></div>
+    </section>
+
+    <!-- SCENE 2 / HEART -->
+    <section data-hf-id="hf-fw2y" class="scene scene2" data-start="6" data-duration="6">
+      <div data-hf-id="hf-lyyy" class="scene-label">Benefit 01 — Heart & circulation</div>
+      <div data-hf-id="hf-d1u3" class="benefit-number">01 / HEART</div>
+      <h2 data-hf-id="hf-yn43" class="big"><span data-hf-id="hf-kdxg">BUILD A</span><br data-hf-id="hf-szow"><span data-hf-id="hf-qxp9" class="pink">STRONGER</span><br data-hf-id="hf-sldv"><span data-hf-id="hf-plh7">HEART.</span></h2>
+      <p data-hf-id="hf-ch44" class="copy">Regular physical activity supports heart health and helps blood move around your body.</p>
+      <div data-hf-id="hf-ovuf" class="tag-row"><div data-hf-id="hf-k3i6" class="tag yellow-bg">CARDIO</div><div data-hf-id="hf-5hu7" class="tag">CIRCULATION</div><div data-hf-id="hf-e1ms" class="tag green-bg">ENDURANCE</div></div>
+      <div data-hf-id="hf-kadz" class="art">
+        <div data-hf-id="hf-b8jh" class="art-card yellow-card"><div data-hf-id="hf-twok" class="art-circle"><svg data-hf-id="hf-ftd6" class="heart-beat" width="320" height="300" viewBox="0 0 320 300" aria-label="Heart with pulse line"><path data-hf-id="hf-u964" d="M160 250 C130 218 55 168 55 104 C55 40 130 34 160 86 C190 34 265 40 265 104 C265 168 190 218 160 250Z" fill="#f064a7" stroke="#101010" stroke-width="9"/><path data-hf-id="hf-jlkc" d="M44 151 H101 L126 110 L158 187 L184 139 L207 151 H278" fill="none" stroke="#101010" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+        <div data-hf-id="hf-zft6" class="art-caption">Keep it pumping</div>
+      </div>
+      <div data-hf-id="hf-n2bp" class="corner-shape shape-pink"></div>
+    </section>
+
+    <!-- SCENE 3 / MOOD -->
+    <section data-hf-id="hf-c9y0" class="scene scene3" data-start="12" data-duration="6">
+      <div data-hf-id="hf-fm31" class="scene-label">Benefit 02 — Mood & mind</div>
+      <div data-hf-id="hf-ak4q" class="benefit-number">02 / MIND</div>
+      <h2 data-hf-id="hf-e4ub" class="big"><span data-hf-id="hf-xuko">BOOST</span><br data-hf-id="hf-qluq"><span data-hf-id="hf-n64a" class="pink">YOUR</span><br data-hf-id="hf-q7jp"><span data-hf-id="hf-xluk">MOOD.</span></h2>
+      <p data-hf-id="hf-sp0v" class="copy">Moving your body can ease stress, lift your mood, and support mental well-being.</p>
+      <div data-hf-id="hf-ohje" class="tag-row"><div data-hf-id="hf-0vky" class="tag green-bg">LESS STRESS</div><div data-hf-id="hf-59c2" class="tag yellow-bg">MORE YOU</div></div>
+      <div data-hf-id="hf-jw2y" class="art">
+        <div data-hf-id="hf-1m7u" class="art-card green-card"><div data-hf-id="hf-7gte" class="art-circle" style="background:var(--yellow)"><svg data-hf-id="hf-2qaq" width="300" height="300" viewBox="0 0 300 300" aria-label="Smiling sun"><g data-hf-id="hf-kckh" stroke="#101010" stroke-width="9" stroke-linecap="round"><path data-hf-id="hf-gqe6" d="M150 15 V42 M150 258 V285 M15 150 H42 M258 150 H285 M55 55 L75 75 M225 225 L245 245 M55 245 L75 225 M225 75 L245 55"/></g><circle data-hf-id="hf-0t52" cx="150" cy="150" r="87" fill="#f064a7" stroke="#101010" stroke-width="9"/><path data-hf-id="hf-huuh" d="M111 139 Q122 154 133 139 M167 139 Q178 154 189 139" fill="none" stroke="#101010" stroke-width="9" stroke-linecap="round"/><path data-hf-id="hf-6ejm" d="M108 174 Q150 218 192 174" fill="none" stroke="#101010" stroke-width="10" stroke-linecap="round"/></svg></div></div>
+        <div data-hf-id="hf-eiqp" class="art-caption">Mind in motion</div>
+      </div>
+      <div data-hf-id="hf-ssxp" class="corner-shape shape-yellow"></div><div data-hf-id="hf-59ao" class="decor-cross"></div>
+    </section>
+
+    <!-- SCENE 4 / STRENGTH AND SLEEP -->
+    <section data-hf-id="hf-wdjt" class="scene scene4" data-start="18" data-duration="6">
+      <div data-hf-id="hf-mgqb" class="scene-label">Benefit 03 — Strength & recovery</div>
+      <div data-hf-id="hf-qwlc" class="benefit-number">03 / POWER</div>
+      <h2 data-hf-id="hf-eerl" class="big" style="top:270px;font-size:150px;width:920px"><span data-hf-id="hf-ml83">GET</span><br data-hf-id="hf-regs"><span data-hf-id="hf-cgmk" class="pink">STRONG.</span><br data-hf-id="hf-r05r"><span data-hf-id="hf-por1" class="outline-text">REST</span><br data-hf-id="hf-p0mm"><span data-hf-id="hf-aryp">WELL.</span></h2>
+      <p data-hf-id="hf-ic47" class="copy" style="top:760px;width:800px;font-size:27px">Strength activity helps maintain muscles and bones. Regular movement can also support better sleep.</p>
+      <div data-hf-id="hf-b6aa" class="split-cards">
+        <div data-hf-id="hf-sk2k" class="mini-card"><div data-hf-id="hf-dm55" class="mini-icon"><svg data-hf-id="hf-ajxe" width="120" height="120" viewBox="0 0 120 120"><g data-hf-id="hf-ovtv" fill="none" stroke="#101010" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"><path data-hf-id="hf-f95o" d="M60 20 V91 M35 39 L60 25 L85 39 M38 91 H82"/><path data-hf-id="hf-k91j" d="M28 45 V78 M18 51 V72 M92 45 V78 M102 51 V72"/></g></svg></div><div data-hf-id="hf-yeow"><h3 data-hf-id="hf-loes">Stronger<br data-hf-id="hf-ombl">body</h3><p data-hf-id="hf-pu99">Build and maintain strength with movement that challenges you safely.</p></div></div>
+        <div data-hf-id="hf-oi38" class="mini-card"><div data-hf-id="hf-98vh" class="mini-icon"><svg data-hf-id="hf-lh6u" width="120" height="120" viewBox="0 0 120 120"><path data-hf-id="hf-gfmf" d="M77 15 C40 18 24 47 32 75 C40 103 73 111 96 91 C69 91 53 68 59 46 C62 33 68 23 77 15Z" fill="#f8c918" stroke="#101010" stroke-width="8"/><path data-hf-id="hf-7a4b" d="M89 25 L95 12 M102 43 L114 40" stroke="#101010" stroke-width="7" stroke-linecap="round"/></svg></div><div data-hf-id="hf-y7yw"><h3 data-hf-id="hf-593t">Better<br data-hf-id="hf-qsyj">sleep</h3><p data-hf-id="hf-gpu5">A steady activity routine may help you wind down at night.</p></div></div>
+      </div>
+      <div data-hf-id="hf-n2s9" class="corner-shape shape-pink"></div>
+    </section>
+
+    <!-- SCENE 5 / ACTION -->
+    <section data-hf-id="hf-dpcx" class="scene scene5" data-start="24" data-duration="6">
+      <div data-hf-id="hf-s7pv" class="scene-label">Your plan — Make it doable</div>
+      <h2 data-hf-id="hf-dqja" class="big"><span data-hf-id="hf-fv77">START</span><br data-hf-id="hf-r79k"><span data-hf-id="hf-pkl2" class="pink">SMALL.</span><br data-hf-id="hf-q0ch"><span data-hf-id="hf-ug44">STAY <span data-hf-id="hf-su4u" class="green">STEADY.</span></span></h2>
+      <p data-hf-id="hf-uoxr" class="copy">You don't need a perfect workout. Choose movement you enjoy and build the habit one day at a time.</p>
+      <div data-hf-id="hf-o38d" class="tag-row"><div data-hf-id="hf-lwa9" class="tag yellow-bg">WALK</div><div data-hf-id="hf-ov0p" class="tag pink-bg">STRETCH</div><div data-hf-id="hf-ly3c" class="tag green-bg">REPEAT</div></div>
+      <div data-hf-id="hf-70xd" class="steps">
+        <div data-hf-id="hf-uqbq" class="step"><span data-hf-id="hf-cshg" class="num">01</span><span data-hf-id="hf-cpw9">Take a brisk walk</span></div>
+        <div data-hf-id="hf-jlje" class="step"><span data-hf-id="hf-a4st" class="num" style="background:var(--pink)">02</span><span data-hf-id="hf-1aqa">Move between tasks</span></div>
+        <div data-hf-id="hf-jzuf" class="step"><span data-hf-id="hf-m6v4" class="num" style="background:var(--yellow);color:var(--ink)">03</span><span data-hf-id="hf-gsco">Find what you enjoy</span></div>
+      </div>
+      <div data-hf-id="hf-kidk" class="end-stamp">MOVE TODAY ↗</div>
+      <div data-hf-id="hf-tzus" class="corner-shape shape-yellow"></div><div data-hf-id="hf-o9pc" class="corner-shape shape-pink"></div>
+    </section>
+
+    <div data-hf-id="hf-gc0b" class="bottomline"><div data-hf-id="hf-b3rh">MOVE YOUR WAY · EVERY MINUTE COUNTS</div><div data-hf-id="hf-4ibx" id="scene-counter">01 / 05&nbsp;&nbsp; • &nbsp;&nbsp;1920 × 1080</div></div>
+    <div data-hf-id="hf-lxwj" class="progress-track"><div data-hf-id="hf-o6ww" id="progress"></div></div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    const scenes = [".scene1", ".scene2", ".scene3", ".scene4", ".scene5"];
+    const sceneStarts = [0, 6, 12, 18, 24];
+
+    // Clean initial state for deterministic frame rendering.
+    gsap.set(scenes, { autoAlpha: 0, x: 46 });
+    gsap.set(".scene1", { autoAlpha: 1, x: 0 });
+    gsap.set(".scene1 .line1", { y: 45, opacity: 0 });
+    gsap.set(".scene1 .line2", { y: 45, opacity: 0 });
+    gsap.set(".scene1 .line3", { y: 45, opacity: 0 });
+
+    // Header/footer stay fixed; the progress indicator maps to the 30-second timeline.
+    tl.fromTo(".topline", { y: -18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" }, 0);
+    tl.fromTo(".bottomline", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" }, 0.25);
+    tl.to("#progress", { scaleX: 1, duration: 30, ease: "none" }, 0);
+
+    // Scene transitions and supporting elements.
+    scenes.forEach((selector, i) => {
+      const start = sceneStarts[i];
+      if (i > 0) {
+        tl.fromTo(selector, { autoAlpha: 0, x: 54 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out" }, start);
+        tl.to(scenes[i - 1], { autoAlpha: 0, x: -34, duration: 0.42, ease: "power2.in" }, start);
+      }
+      if (i < scenes.length - 1) {
+        tl.to(selector, { autoAlpha: 0, x: -34, duration: 0.42, ease: "power2.in" }, start + 5.58);
+      }
+      // Labels, tags and descriptions arrive with a small stagger.
+      tl.fromTo(selector + " .scene-label", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.42, ease: "power2.out" }, start + 0.12);
+      tl.fromTo(selector + " .copy", { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, start + 1.65);
+      tl.fromTo(selector + " .tag", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.38, stagger: 0.09, ease: "back.out(1.4)" }, start + 2.55);
+      tl.fromTo(selector + " .art", { scale: 0.86, rotation: -2, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.75, ease: "back.out(1.15)" }, start + 0.35);
+      tl.fromTo(selector + " .benefit-number", { y: -16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, start + 0.18);
+      tl.fromTo(selector + " .mini-card", { x: 55, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, stagger: 0.18, ease: "power3.out" }, start + 0.8);
+      tl.fromTo(selector + " .step", { x: 55, opacity: 0 }, { x: 0, opacity: 1, duration: 0.43, stagger: 0.16, ease: "power3.out" }, start + 0.8);
+      tl.fromTo(selector + " .end-stamp", { scale: 0.65, rotation: -16, opacity: 0 }, { scale: 1, rotation: -7, opacity: 1, duration: 0.45, ease: "back.out(1.7)" }, start + 3.3);
+      tl.fromTo(selector + " .corner-shape", { scale: 0.75, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.65, stagger: 0.1, ease: "power2.out" }, start + 0.2);
+    });
+
+    // Intro headline is animated as three strong typographic beats.
+    tl.to(".scene1 .line1", { y: 0, opacity: 1, duration: 0.48, ease: "power3.out" }, 0.3);
+    tl.to(".scene1 .line2", { y: 0, opacity: 1, duration: 0.48, ease: "power3.out" }, 0.55);
+    tl.to(".scene1 .line3", { y: 0, opacity: 1, duration: 0.48, ease: "power3.out" }, 0.8);
+
+    // Main headlines enter with a small punch on the remaining scenes.
+    [".scene2 .big", ".scene3 .big", ".scene4 .big", ".scene5 .big"].forEach((sel, idx) => {
+      tl.fromTo(sel, { y: 35, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, duration: 0.58, ease: "power3.out" }, sceneStarts[idx + 1] + 0.22);
+    });
+    tl.fromTo(".scene4 .copy", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45 }, 19.65);
+
+    // A gentle pulse gives the heart illustration a little life without distracting from the message.
+    tl.to(".scene2 .heart-beat", { scale: 1.07, duration: 0.32, repeat: 5, yoyo: true, ease: "sine.inOut" }, 7.1);
+    tl.to(".scene3 .art-circle", { rotation: 7, duration: 0.65, repeat: 3, yoyo: true, ease: "sine.inOut" }, 13.1);
+    tl.to(".scene1 .art-card", { rotation: 2, duration: 2.4, yoyo: true, repeat: 1, ease: "sine.inOut" }, 1.1);
+    tl.to(".scene5 .end-stamp", { y: -10, duration: 0.45, repeat: 2, yoyo: true, ease: "sine.inOut" }, 26.8);
+
+    // Update the scene count as the composition is rendered at any timestamp.
+    const counter = document.getElementById("scene-counter");
+    tl.call(() => { counter.innerHTML = "01 / 05&nbsp;&nbsp; • &nbsp;&nbsp;1920 × 1080"; }, null, 0);
+    [6, 12, 18, 24].forEach((t, i) => {
+      tl.call(() => { counter.innerHTML = String(i + 2).padStart(2, "0") + " / 05&nbsp;&nbsp; • &nbsp;&nbsp;1920 × 1080"; }, null, t + 0.05);
+    });
+
+    window.__timelines["main"] = tl;
+    tl.seek(0);
+  </script>
+</body>
+</html>

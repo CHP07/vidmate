@@ -1,0 +1,14 @@
+{
+  "name": "storyverse",
+  "version": "0.1.0",
+  "private": true,
+  "description": "StoryVerse: Python-orchestrated story-to-video pipeline on HyperFrames (HTML/GSAP -> MP4). All dependencies, caches and renders stay inside this folder.",
+  "scripts": {
+    "hf": "node scripts/hf-runner.js",
+    "verify": "python scripts/verify_setup.py"
+  },
+  "type": "module",
+  "dependencies": {
+    "hyperframes": "^0.8.193"
+  }
+}
